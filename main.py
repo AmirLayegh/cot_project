@@ -16,7 +16,7 @@ task = "NO_COHERENCE"
 llm_type = "llama"
 
 test_indices = "./dataset/gsm8k/test_indices.jsonl"
-access_token = "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"
+access_token = "YOUR_ACCESS_TOKEN"
 top_p=0.01
 temperature=0.001
 max_tokens=400
