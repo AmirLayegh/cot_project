@@ -1,0 +1,43 @@
+Hello cluster computing world!
+JOB: 10425418
+The following is RAM info.
+              total        used        free      shared  buff/cache   available
+Mem:          1.0Ti        17Gi       981Gi       6.0Mi       8.8Gi       985Gi
+Swap:          14Gi       5.0Mi        14Gi
+The following is GPU info.
+Mon Feb  5 15:15:27 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.154.05             Driver Version: 535.154.05   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-SXM4-40GB          On  | 00000000:47:00.0 Off |                    0 |
+| N/A   26C    P0              52W / 400W |      0MiB / 40960MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Launching experiments with apptainer.
+PYTHONPATH is: 
+Current working directory is: /proj/layegh/users/x_amila/cot_project
+ Testing on 3 QA pairs
+Total number of QA pairs: 1319
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.84s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  4.95s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.38s/it]
+/home/x_amila/.local/lib/python3.8/site-packages/transformers/utils/hub.py:374: FutureWarning: The `use_auth_token` argument is deprecated and will be removed in v5 of Transformers.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/proj/layegh/users/x_amila/cot_project/main.py", line 55, in <module>
+    chain_of_thought.run()
+  File "/proj/layegh/users/x_amila/cot_project/src/cot.py", line 85, in run
+    writer = jsonlines.open(file_name, mode='w')
+  File "/home/x_amila/.local/lib/python3.8/site-packages/jsonlines/jsonlines.py", line 643, in open
+    fp = builtins.open(file, mode=mode + "t", encoding=encoding)
+FileNotFoundError: [Errno 2] No such file or directory: './results/gsm8k.meta-llama_Llama-2-7b-chat-hf.sample_3_NO_COHERENCE.jsonl'
