@@ -1,36 +1,0 @@
-Hello cluster computing world!
-JOB: 10425423
-The following is RAM info.
-              total        used        free      shared  buff/cache   available
-Mem:          1.0Ti        18Gi       973Gi       6.0Mi        15Gi       984Gi
-Swap:          14Gi       5.0Mi        14Gi
-The following is GPU info.
-Mon Feb  5 15:19:47 2024       
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.154.05             Driver Version: 535.154.05   CUDA Version: 12.2     |
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  NVIDIA A100-SXM4-40GB          On  | 00000000:47:00.0 Off |                    0 |
-| N/A   26C    P0              52W / 400W |      0MiB / 40960MiB |      0%      Default |
-|                                         |                      |             Disabled |
-+-----------------------------------------+----------------------+----------------------+
-                                                                                         
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|  No running processes found                                                           |
-+---------------------------------------------------------------------------------------+
-Launching experiments with apptainer.
-PYTHONPATH is: 
-Current working directory is: /proj/layegh/users/x_amila/cot_project
- Testing on 400 QA pairs
-Total number of QA pairs: 1319
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.68s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:09<00:00,  4.51s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:09<00:00,  4.99s/it]
-/home/x_amila/.local/lib/python3.8/site-packages/transformers/utils/hub.py:374: FutureWarning: The `use_auth_token` argument is deprecated and will be removed in v5 of Transformers.
-  warnings.warn(
-Asking to truncate to max_length but no maximum length is provided and the model has no predefined maximum length. Default to no truncation.
