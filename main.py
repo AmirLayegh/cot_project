@@ -11,9 +11,11 @@ NUM_TEST = 400
 SEED=1357
 DATASET_PATH = "./dataset/gsm8k/test.jsonl"
 
-model_id = "llama_2_7b"
-task = "NO_COHERENCE"
-llm_type = "llama"
+model_id = "gpt-3.5"
+#model_id = "llama_2_70b"
+task = "NO_LANG_COHERENCE"
+llm_type = "gpt"
+#llm_type = "llama"
 
 test_indices = "./dataset/gsm8k/test_indices.jsonl"
 access_token = "YOUR_ACCESS_TOKEN"
@@ -42,6 +44,7 @@ else:
     qa_pairs_test = [qa_pairs[idx] for idx in rand_indices]
     print(f" Testing on {len(qa_pairs_test)} QA pairs")
 
+#qa_pairs_test = qa_pairs_test[:5]
 chain_of_thought = ChainofThoughtRun(
     test_data = qa_pairs_test,
     model_id = model_id,

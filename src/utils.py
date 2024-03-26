@@ -8,7 +8,26 @@ from huggingface_hub import login
 import openai
 import dataclasses
 from .prompts import (NO_COHERENCE_PROMPT,
-                     GPT_PROMPT_NO_COHERENCE,)
+                     GPT_PROMPT_NO_COHERENCE,
+                     NO_RELEVANCE_PROMPT,
+                     GPT_PROMPT_NO_RELEVANCE,
+                     GPT_PROMPT_NO_LANG_COHERENCE,
+                     NO_LANG_COHERENCE,
+                     NO_LANG_RELEVANCE,
+                     GPT_PROMPT_NO_LANG_RELEVANCE,
+                     GPT_PROMPT_INVALID_REASONING,
+                     PROMPT_INVALID_REASONING,
+                     COT_PROMPT,
+                     GPT_COT_PROMPT,
+                     STANDARD_PROMPT,
+                     NO_NUM_COHERENCE_PROMPT,
+                     NO_NUM_RELEVANCE_PROMPT,
+                     HUMAN_FEEDBACK_PROMPT,
+                     ARITHMETIC_PROMPT,
+                     GPT_HUMAN_FEEDBACK_PROMPT,
+                     GPT_NO_NUM_RELEVANCE_PROMPT,
+                     GPT_NO_NUM_COHERENCE_PROMPT,
+                     )
 
 def read_jsonl(path: str):
     with open(path, "r", encoding='utf-8') as fh:
@@ -93,7 +112,7 @@ class ModelConfig:
     max_tokens: int
 
 LLAMA_PROMPT_FORMAT = (
-    """<s>[INST] <<SYS>>{prompt}\n<</SYS>>\n{command} [/INST]"""
+    """<s>[INST] <<SYS>>{prompt}\n<</SYS>>\n{command} [/INST]""" # you are a math reasoner.
 )
 GPT_PROMPT_FORMAT = (
     """{prompt}\n\nQ: {question}\nA:"""
@@ -121,7 +140,7 @@ MODEL_MAPPING = {
         is_gpt=False,
         max_tokens=500,
     ),
-    "gpt": ModelConfig(
+    "gpt-3.5": ModelConfig(
         id="gpt-3.5-turbo-instruct",
         prompt_format=GPT_PROMPT_FORMAT,
         is_llama=False,
@@ -152,6 +171,9 @@ def import_llm_and_tokenizer(model: ModelConfig, access_token: str = None):
         raise ValueError("Access token must be provided for protected models.")
     if model.is_gpt:
         print(f"The model is a {model.id} model.")
+        language_model=None
+        tokenizer=None
+        return language_model, tokenizer
         
     # def get_answer_from_llm(prompt, question, model=None, tokenizer=None, model_config: ModelConfig = None):
     #     if model_config.is_llama and model is not None and tokenizer is not None:
@@ -190,7 +212,128 @@ TASK_MAPPING = {
             prompt=NO_COHERENCE_PROMPT,
             command=" A:",
         ),
-        
     ),
+    "NO_RELEVANCE": TaskConfig(
+        id="NO_RELEVANCE",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_PROMPT_NO_RELEVANCE,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=NO_RELEVANCE_PROMPT,
+            command=" A:",
+        ),
+    ),
+    "NO_LANG_COHERENCE": TaskConfig(
+        id="NO_LANG_COHERENCE",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_PROMPT_NO_LANG_COHERENCE,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=NO_LANG_COHERENCE,
+            command=" A:",
+        ),
+    ),
+    "NO_LANG_RELEVANCE": TaskConfig(
+        id="NO_LANG_RELEVANCE",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_PROMPT_NO_LANG_RELEVANCE,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=NO_LANG_RELEVANCE,
+            command=" A:",
+        ),
+    ),
+    "INVALID_REASONING": TaskConfig(
+        id="INVALID_REASONING",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_PROMPT_INVALID_REASONING,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=PROMPT_INVALID_REASONING,
+            command=" A:",
+        ),
+    ),
+    "STANDARD_COT": TaskConfig (
+        id="STANDARD_COT",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_COT_PROMPT,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=COT_PROMPT,
+            command=" A:",
+        
+    )
+    ),
+    "STANDARD": TaskConfig(
+        id="STANDARD",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=STANDARD_PROMPT,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=STANDARD_PROMPT,
+            command=" A:",
+        ),
+    ),
+    "NO_NUM_COHERENCE": TaskConfig(
+        id="NO_NUM_COHERENCE",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_NO_NUM_COHERENCE_PROMPT,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=NO_NUM_COHERENCE_PROMPT,
+            command=" A:",
+        ),
+    ),
+    "NO_NUM_RELEVANCE": TaskConfig(
+        id="NO_NUM_RELEVANCE",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_NO_NUM_RELEVANCE_PROMPT,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=NO_NUM_RELEVANCE_PROMPT,
+            command=" A:",
+        ),
+    ),
+    "HUMAN_FEEDBACK": TaskConfig(
+        id="HUMAN_FEEDBACK",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=GPT_HUMAN_FEEDBACK_PROMPT,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=HUMAN_FEEDBACK_PROMPT,
+            command=" A:",
+        ),
+    ),
+    "ARITHMATIC": TaskConfig(
+        id="ARITHMATIC",
+        gpt_config=GptConfig(
+            id="gpt-3.5-turbo-instruct",
+            prompt=ARITHMETIC_PROMPT,
+        ),
+        llama_config=LlamaConfig(
+            id="meta-llama/Llama-2-70b-chat-hf",
+            prompt=ARITHMETIC_PROMPT,
+            command=" A:",
+        ),
+    ),
+    
 }
         

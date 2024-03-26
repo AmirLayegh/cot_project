@@ -18,13 +18,7 @@ echo "PYTHONPATH is: $PYTHONPATH"
 
 echo "Current working directory is: $(pwd)"
 
-#export PYTHONPATH=/proj/layegh/users/x_amila/CoV:$PYTHONPATH
 
 
-#apptainer exec  --nv  /proj/layegh/users/x_amila/CoV/Project/nebula.sif python3 /proj/layegh/users/x_amila/CoV/Project/main.py
+apptainer exec --env OPENAI_API_KEY= --nv  nebula.sif python3 main.py
 
-apptainer exec --env OPENAI_API_KEY= --nv  /proj/layegh/users/x_amila/CoV/Project/nebula.sif python3 /proj/layegh/users/x_amila/cot_project/main.py
-
-#apptainer exec --env OPENAI_API_KEY=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 nebula.sif python3 re_zephyr.py
-
-#/proj/layegh/users/x_amila/HandsOnTransformers/test.py

@@ -15,11 +15,11 @@ from .utils import (extract_answer,
 class ChainofThoughtRun:
     def __init__(self, model_id, task, llm_type, test_data, access_token=None, top_p=0.01, temperature=0.001, max_tokens=None):
         self.model_id = model_id
-        self.model_config : ModelConfig = MODEL_MAPPING.get(model_id, None)
+        self.model_config : ModelConfig = MODEL_MAPPING.get(self.model_id, None)
         if self.model_config is None:
             raise ValueError(f"Model with id {model_id} is not supported.")
         self.task = task
-        self.task_config : TaskConfig = TASK_MAPPING.get(task, None)
+        self.task_config : TaskConfig = TASK_MAPPING.get(self.task, None)
         if self.task_config is None:
             raise ValueError(f"Task with id {task} is not supported.")
         self.llm_type = llm_type
@@ -47,7 +47,7 @@ class ChainofThoughtRun:
         return prompt
         
     def get_answer_from_llm(self, question, model=None, tokenizer=None, model_config: ModelConfig = None):
-        if self.model_config.is_llama and model is not None and tokenizer is not None:
+        if model_config.is_llama and model is not None and tokenizer is not None:
             llama_prompt = self.process_prompt(question)
             input_ids = tokenizer(llama_prompt, return_tensors="pt", truncation=True).input_ids.cuda()
             outputs = model.generate(input_ids=input_ids,
@@ -64,7 +64,7 @@ class ChainofThoughtRun:
             #     tokens=tokens
     
             return tokens
-        elif self.model_config.is_gpt:
+        elif model_config.is_gpt:
             gpt_prompt = self.process_prompt(question)
             response = openai.Completion.create(
             engine=self.model_config.id,
@@ -81,13 +81,16 @@ class ChainofThoughtRun:
     def run(self):
         #result = dict()
         model_type = self.model_config.id.replace("/", "_")
-        file_name = "./result/gsm8k.{}.sample_{}_{}.jsonl".format(model_type, len(self.test_data), self.task)
+        file_name = "./result/gsm8k.{}.sample_{}_{}.jsonl".format(model_type, len(self.test_data), self.task).lower()
         writer = jsonlines.open(file_name, mode='w')
         for question, answer in self.test_data:
             result = dict()
             result['question'] = question
             result['answer'] = answer
-            result[self.model_config.id] = self.get_answer_from_llm(question, model=self.llm, tokenizer=self.tokenizer, model_config=self.model_config)
+            if self.llm_type == "llama":
+                result[self.model_config.id] = self.get_answer_from_llm(question, model=self.llm, tokenizer=self.tokenizer, model_config=self.model_config)
+            elif self.llm_type == "gpt":
+                result[self.model_config.id] = self.get_answer_from_llm(question, model=None, tokenizer=None, model_config=self.model_config)
             writer.write(result)
         writer.write(self.llm_config.prompt)
         writer.close()
